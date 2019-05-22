@@ -34,6 +34,11 @@ function Compile(el,vm){
 				arr.forEach(function(k){
 					val=val[k]
 				})
+				// 替换逻辑
+				new Watcher(vm, RegExp.$1,function(newVal){
+					node.textContent=text.replace(/\{\{(.*)\}\}/,newVal);
+					
+				})
 				node.textContent=text.replace(/\{\{(.*)\}\}/,val);
 			};
 			if(node.childNodes){
@@ -45,12 +50,14 @@ function Compile(el,vm){
 	
 }
 function Observe(data){
+	let dep=new Dep()
 	for(let key in data){
 		let val=data[key];
 		observe(val)
 		Object.defineProperty(data,key,{
 			enumerable:true,
 			get(){
+				Dep.target&&dep.addSub(Dep.target)
 				return val;
 			},
 			set(newVal){
@@ -58,7 +65,8 @@ function Observe(data){
 					return
 				}
 				val=newVal;
-				observe(val)
+				observe(val);
+				dep.notify()
 			}
 		})
 	}
@@ -66,4 +74,36 @@ function Observe(data){
 function observe(data){
 	if(typeof data!=="object")return;
 	return new Observe(data)
+}
+
+// 发布订阅模式
+function Dep(){
+	this.subs=[];
+}
+Dep.prototype.addSub=function(sub){
+	this.subs.push(sub);
+}
+Dep.prototype.notify=function(sub){
+	this.subs.forEach(sub=>sub.update())
+}
+
+function Watcher(vm,exp,fn){
+	this.fn=fn
+	this.vm=vm;
+	this.exp=exp;
+	Dep.target=this;
+	let val=vm;
+	let arr=exp.split('.');
+	arr.forEach(function(k){
+		val=val[k]
+	})
+	Dep.target=null;
+}
+Watcher.prototype.update=function(){
+	let val=this.vm;
+	let arr=this.exp.split('.');
+	arr.forEach(function(k){
+		val=val[k];
+	})
+	this.fn(val)
 }
