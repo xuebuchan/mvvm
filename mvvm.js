@@ -57,6 +57,7 @@ function Observe(data){
 		Object.defineProperty(data,key,{
 			enumerable:true,
 			get(){
+				console.log(Dep.target,dep)
 				Dep.target&&dep.addSub(Dep.target)
 				return val;
 			},
@@ -86,7 +87,7 @@ Dep.prototype.addSub=function(sub){
 Dep.prototype.notify=function(sub){
 	this.subs.forEach(sub=>sub.update())
 }
-
+/git提交测试/
 function Watcher(vm,exp,fn){
 	this.fn=fn
 	this.vm=vm;
