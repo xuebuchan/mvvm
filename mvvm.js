@@ -90,9 +90,17 @@ Dep.prototype.notify=function(sub){
 
 /git提交测试3/
 /git提交测试2/
+
+/master提交/
+
 /xuwh提交/
+
 //xuwh提交2
+
 //xuwh3
+
+
+//master提交1
 function Watcher(vm,exp,fn){
 	this.fn=fn
 	this.vm=vm;
