@@ -94,7 +94,11 @@ Dep.prototype.notify=function(sub){
 /master提交/
 
 /xuwh提交/
+
+//xuwh提交2
+
 //master提交1
+
 
 function Watcher(vm,exp,fn){
 	this.fn=fn
