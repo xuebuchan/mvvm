@@ -87,7 +87,7 @@ Dep.prototype.addSub=function(sub){
 Dep.prototype.notify=function(sub){
 	this.subs.forEach(sub=>sub.update())
 }
-/git提交测试/
+/git提交测试2/
 function Watcher(vm,exp,fn){
 	this.fn=fn
 	this.vm=vm;
